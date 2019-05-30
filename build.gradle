@@ -89,7 +89,6 @@ repositories {
 }
 
 dependencies {
-	compile files('libs/RailwayToHeaven-1.0.jar');
     deobfCompile group: group, name: 'LunatriusCore', version: "${project.version_minecraft}-${project.version_lunatriuscore}", classifier: 'universal'
 }
 
