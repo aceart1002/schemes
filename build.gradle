@@ -1,195 +1,77 @@
 buildscript {
     repositories {
-        mavenCentral()
         jcenter()
-        maven {
-            name = 'gradle plugins'
-            url "https://plugins.gradle.org/m2/"
-        }
-        maven {
-            name = 'forge'
-            url = 'http://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'sonatype'
-            url = 'https://oss.sonatype.org/content/repositories/snapshots/'
-        }
+        maven { url = "http://files.minecraftforge.net/maven" }
     }
     dependencies {
         classpath 'net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT'
-        classpath 'gradle.plugin.com.matthewprenger:CurseGradle:1.0.9'
     }
 }
-
 apply plugin: 'net.minecraftforge.gradle.forge'
-apply plugin: 'com.matthewprenger.cursegradle'
+//Only edit below this line, the above code adds and enables the necessary things for Forge to be setup.
 
-ext.build = System.getenv().BUILD_NUMBER ?: 'git'
-ext.modversion = "${project.version_major}.${project.version_minor}.${project.version_micro}.${build}"
 
-group = 'com.github.lunatrius'
-version = "${project.version_minecraft}-${modversion}"
-archivesBaseName = "Schemes"
+version = "1.0"
+group = "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "modid"
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
+sourceCompatibility = targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 compileJava {
-    sourceCompatibility = '1.8'
-    targetCompatibility = '1.8'
-
-    options.encoding = 'UTF-8'
+    sourceCompatibility = targetCompatibility = '1.8'
 }
 
 minecraft {
-    version = "${project.version_minecraft}-${project.version_forge}"
+    version = "1.12.2-14.23.5.2768"
+    runDir = "run"
+    
+    // the mappings can be changed at any time, and must be in the following format.
+    // snapshot_YYYYMMDD   snapshot are built nightly.
+    // stable_#            stables are built at the discretion of the MCP team.
+    // Use non-default mappings at your own risk. they may not always work.
+    // simply re-run your setup task after changing the mappings to update your workspace.
+    mappings = "snapshot_20171003"
+    // makeObfSourceJar = false // an Srg named sources jar is made by default. uncomment this to disable.
+}
 
-    if (project.hasProperty('version_mappings'))
-        mappings = project.version_mappings
+dependencies {
+    // you may put jars on which you depend on in ./libs
+    // or you may define them like so..
+    //compile "some.group:artifact:version:classifier"
+    //compile "some.group:artifact:version"
+      
+    // real examples
+    //compile 'com.mod-buildcraft:buildcraft:6.0.8:dev'  // adds buildcraft to the dev env
+    //compile 'com.googlecode.efficient-java-matrix-library:ejml:0.24' // adds ejml to the dev env
 
-    if (!project.hasProperty('run_location'))
-        runDir = 'run'
-    else
-        runDir = run_location.replace('{modid}', project.name).replace('{mcversion}', project.version_minecraft)
+    // the 'provided' configuration is for optional dependencies that exist at compile-time but might not at runtime.
+    //provided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
 
-    replaceIn 'reference/Reference.java'
-    replace '${version}', modversion
-    replace '${mcversion}', project.version_minecraft
-    replace '${forgeversion}', project.version_forge
+    // the deobf configurations:  'deobfCompile' and 'deobfProvided' are the same as the normal compile and provided,
+    // except that these dependencies get remapped to your current MCP mappings
+    //deobfCompile 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+    //deobfProvided 'com.mod-buildcraft:buildcraft:6.0.8:dev'
+
+    // for more info...
+    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
+    // http://www.gradle.org/docs/current/userguide/dependency_management.html
+
 }
 
 processResources {
     // this will ensure that this task is redone when the versions change.
-    inputs.property 'version', project.version
-    inputs.property 'mcversion', project.minecraft.version
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
 
+    // replace stuff in mcmod.info, nothing else
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-
-        expand([
-                'modid'          : project.name,
-                'version'        : modversion,
-                'mcversion'      : project.version_minecraft,
-                'forgeversion'   : project.version_forge,
-                'minforgeversion': project.hasProperty('version_minforge') ? project.version_minforge : project.version_forge,
-                'coreversion'    : project.version_lunatriuscore
-        ])
+                
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
     }
-
+        
+    // copy everything else except the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
-    }
-}
-
-repositories {
-    ivy {
-        name = 'lunatrius\' ivy repo'
-        url 'http://mc.lunatri.us/files'
-    }
-}
-
-dependencies {
-    deobfCompile group: group, name: 'LunatriusCore', version: "${project.version_minecraft}-${project.version_lunatriuscore}", classifier: 'universal'
-}
-
-def commonManifest = {
-    if (project.hasProperty('extra_fmlat')) {
-        attributes 'FMLAT': project.extra_fmlat
-    }
-}
-
-jar {
-    from sourceSets.api.output
-    classifier = project.hasProperty('extra_classifier') ? project.extra_classifier : 'universal'
-    manifest commonManifest
-}
-
-sourceJar {
-    from sourceSets.api.allSource
-}
-
-task apiJar(dependsOn: 'classes', type: Jar) {
-    from sourceSets.api.output
-    classifier = 'api'
-    manifest commonManifest
-}
-
-artifacts {
-    archives sourceJar
-    archives apiJar
-}
-
-if (!project.hasProperty('keystore_location'))
-    ext.keystore_location = '.'
-
-if (!project.hasProperty('keystore_alias'))
-    ext.keystore_alias = ''
-
-if (!project.hasProperty('keystore_password'))
-    ext.keystore_password = ''
-
-task signJars(dependsOn: ['reobfJar', 'sourceJar', 'apiJar']) {
-    inputs.dir jar.destinationDir
-    inputs.file keystore_location
-    inputs.property 'keystore_alias', keystore_alias
-    inputs.property 'keystore_password', keystore_password
-    outputs.dir jar.destinationDir
-
-    onlyIf {
-        return keystore_location != '.'
-    }
-
-    doLast {
-        jar.destinationDir.eachFile { file ->
-            if (!file.getPath().endsWith('.jar'))
-                return;
-
-            logger.lifecycle "signing ${file}"
-            ant.signjar(
-                    destDir: file.getParentFile(),
-                    jar: file,
-                    keystore: keystore_location,
-                    alias: keystore_alias,
-                    storepass: keystore_password
-            )
-        }
-    }
-}
-
-if (!project.hasProperty('release_location'))
-    ext.release_location = '.'
-else
-    ext.release_location = release_location.replace('{modid}', project.name).replace('{mcversion}', project.version_minecraft).replace('{version}', version)
-
-task release(dependsOn: 'signJars', type: Copy) {
-    from project.tasks.jar.destinationDir
-    into project.file(project.release_location)
-
-    eachFile { file ->
-        logger.lifecycle "copying ${file}"
-    }
-
-    onlyIf {
-        return project.release_location != '.'
-    }
-}
-
-if (project.hasProperty('api_key_curseforge') && project.hasProperty('extra_curseforge_id')) {
-    tasks.curseforge.dependsOn signJars
-    curseforge {
-        apiKey = project.api_key_curseforge
-
-        project {
-            id = project.extra_curseforge_id
-            changelog = ''
-            releaseType = project.hasProperty('extra_curseforge_releasetype') ? project.extra_curseforge_releasetype : 'release'
-
-            addArtifact sourceJar
-            addArtifact apiJar
-
-            relations {
-                requiredLibrary 'lunatriuscore'
-            }
-        }
     }
 }

@@ -1,25 +1,16 @@
+[
 {
-	"modListVersion": 2,
-	"modList": [
-		{
-			"modid": "schemes",
-			"name": "Schemes",
-			"description": "Import and export Minecraft schematic files in Minecraft!",
-			"mcversion": "${mcversion}",
-			"version": "${version}",
-			"authorList": [
-				"aceart"
-			],
-			"credits": "AbrarSyed, AtomicBlom, UltraMoogleMan",
-			"dependants": [  ],
-			"dependencies": [ "forge@[${minforgeversion},)", "lunatriuscore@[${coreversion},)" ],
-			"parent": "",
-			"requiredMods": [ "forge@[${minforgeversion},)", "lunatriuscore@[${coreversion},)" ],
-			"logoFile": "/assets/schematica/logo.png",
-			"screenshots": [  ],
-			"updateUrl": "http://mc.lunatri.us/",
-			"url": "http://mc.lunatri.us/",
-			"useDependencyInformation": true
-		}
-	]
+  "modid": "examplemod",
+  "name": "Example Mod",
+  "description": "Example placeholder mod.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["ExampleDude"],
+  "credits": "The Forge and FML guys, for making this example",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
 }
+]
