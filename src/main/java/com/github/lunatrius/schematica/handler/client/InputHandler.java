@@ -2,7 +2,6 @@ package com.github.lunatrius.schematica.handler.client;
 
 import org.lwjgl.input.Keyboard;
 
-import com.github.lunatrius.schematica.client.gui.control.GuiSchematicControl;
 import com.github.lunatrius.schematica.client.gui.load.GuiSchematicLoad;
 import com.github.lunatrius.schematica.client.gui.save.GuiSchematicSave;
 import com.github.lunatrius.schematica.client.printer.SchematicPrinter;
@@ -12,7 +11,6 @@ import com.github.lunatrius.schematica.client.world.SchematicWorld.LayerMode;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 
-import aceart.blocks.tiles.TileSavePoints;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.resources.I18n;
@@ -67,7 +65,7 @@ public class InputHandler {
             if (KEY_BINDING_SAVE.isPressed()) {
 //            	ClientProxy.schematic = null;
 //        		RenderSchematic.INSTANCE.setWorldAndLoadRenderers(null);
-//        		SchematicPrinter.INSTANCE.setSchematic(null);
+//        		SchematicPrinter.instance.setSchematic(null);
                 this.minecraft.displayGuiScreen(new GuiSchematicSave(this.minecraft.currentScreen));
             }
 

@@ -1,5 +1,14 @@
 package com.github.lunatrius.schematica.world.schematic;
 
+import com.github.lunatrius.schematica.api.ISchematic;
+import com.github.lunatrius.schematica.api.event.PostSchematicCaptureEvent;
+import com.github.lunatrius.schematica.reference.Names;
+import com.github.lunatrius.schematica.reference.Reference;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.MinecraftForge;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,20 +17,6 @@ import java.util.Map;
 import java.util.zip.GZIPOutputStream;
 
 import javax.annotation.Nullable;
-
-import com.github.lunatrius.schematica.api.ISchematic;
-import com.github.lunatrius.schematica.api.event.PostSchematicCaptureEvent;
-import com.github.lunatrius.schematica.handler.ConfigurationHandler;
-import com.github.lunatrius.schematica.proxy.ClientProxy;
-import com.github.lunatrius.schematica.reference.Names;
-import com.github.lunatrius.schematica.reference.Reference;
-import com.github.lunatrius.schematica.world.storage.GeneratedScheme;
-
-import aceart.schemes.Schemes;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.MinecraftForge;
 
 public abstract class SchematicFormat {
 	// LinkedHashMap to ensure defined iteration order

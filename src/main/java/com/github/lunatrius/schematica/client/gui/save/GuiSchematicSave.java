@@ -12,21 +12,14 @@ import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
-import com.github.lunatrius.schematica.world.storage.Schematic;
 
-import aceart.blocks.tiles.TileSavePoints;
-import aceart.blocks.tiles.TileSchemeContainer;
-import aceart.network.UpdateMessage;
+import aceart.api.MWrapper;
 import aceart.schemes.Schemes;
-import ca.weblite.objc.Client;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.math.BlockPos;
-import scala.collection.script.Update;
 
 public class GuiSchematicSave extends GuiScreenBase {
 	private int centerX = 0;
@@ -75,8 +68,8 @@ public class GuiSchematicSave extends GuiScreenBase {
 
 	private void setInitialPoints() {
 
-		ClientProxy.pointA = ClientProxy.saver.getCurrentPosition();
-		ClientProxy.pointB = ClientProxy.saver.getSavedPoint();
+		ClientProxy.pointA = MWrapper.transformBlockPos(ClientProxy.saver.getCurrentPosition());
+		ClientProxy.pointB = MWrapper.transformBlockPos(ClientProxy.saver.getSavedPoint());
 		ClientProxy.updatePoints();
 	}
 
@@ -224,11 +217,9 @@ public class GuiSchematicSave extends GuiScreenBase {
 
 
 	private void savePoint() {
-//		ClientProxy.saver.setSavedPoint(ClientProxy.pointB);
-		UpdateMessage message = new UpdateMessage(ClientProxy.pointB, "", 0, 
-				new MBlockPos(), 1);
-		
-		Schemes.wrapper.sendToServer(message);
+
+		ClientProxy.updater.updateServer(ClientProxy.pointB, "", 0, new MBlockPos(), 1);
+
 	}
 
 

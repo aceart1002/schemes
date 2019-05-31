@@ -25,8 +25,9 @@ import com.github.lunatrius.schematica.world.schematic.SchematicUtil;
 import com.github.lunatrius.schematica.world.storage.GeneratedScheme;
 import com.github.lunatrius.schematica.world.storage.Schematic;
 
-import aceart.blocks.BlockSchemeController;
-import aceart.blocks.BlockSchemeSaver;
+import aceart.api.Controlling;
+import aceart.api.Saving;
+import aceart.api.ServerUpdater;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -47,8 +48,9 @@ public abstract class CommonProxy {
 	public boolean isSaveEnabled = true;
 	public boolean isLoadEnabled = true;
 
-	public static BlockSchemeController controller;
-	public static BlockSchemeSaver saver;
+	public static Controlling controller;
+	public static Saving saver;
+	public static ServerUpdater updater;
 	
 	public void preInit(final FMLPreInitializationEvent event) {
 		Reference.logger = event.getModLog();
@@ -63,7 +65,6 @@ public abstract class CommonProxy {
 		MinecraftForge.EVENT_BUS.register(QueueTickHandler.INSTANCE);
 		MinecraftForge.EVENT_BUS.register(DownloadHandler.INSTANCE);
 
-		//        NetworkRegistry.INSTANCE.registerGuiHandler(Schematica.instance, new GuiHandler());
 	}
 
 	public void postInit(final FMLPostInitializationEvent event) {
@@ -294,12 +295,7 @@ public abstract class CommonProxy {
 	public abstract void openGuiLoad();
 
 	public abstract void openGuiControl();
-	
-	public abstract void openGuiGenerate();
 
-	public void unloadSchematic(boolean flag) {
-		// TODO Auto-generated method stub
-
-	}
+	public abstract void unloadSchematic(boolean flag);
 
 }

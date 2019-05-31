@@ -1,8 +1,10 @@
 package com.github.lunatrius.schematica.client.printer;
 
-import com.github.lunatrius.core.util.math.BlockPosHelper;
-import com.github.lunatrius.core.util.math.MBlockPos;
-import com.github.lunatrius.core.util.vector.Vector3d;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
 import com.github.lunatrius.schematica.block.state.BlockStateHelper;
 import com.github.lunatrius.schematica.client.printer.nbtsync.NBTSync;
 import com.github.lunatrius.schematica.client.printer.nbtsync.SyncRegistry;
@@ -15,7 +17,7 @@ import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Reference;
 
-import aceart.BoxBuilder;
+import aceart.api.Printable;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -33,20 +35,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidBase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
 public class SchematicPrinter {
-    public static final SchematicPrinter INSTANCE = new SchematicPrinter();
+	public static final SchematicPrinter INSTANCE = new SchematicPrinter();
 
     private final Minecraft minecraft = Minecraft.getMinecraft();
-
+    
     private boolean isEnabled = true;
     private boolean isPrinting = false;
 
@@ -54,6 +50,8 @@ public class SchematicPrinter {
     private byte[][][] timeout = null;
     private HashMap<BlockPos, Integer> syncBlacklist = new HashMap<BlockPos, Integer>();
 
+    public static Printable printArea;
+    
     public boolean isEnabled() {
         return this.isEnabled;
     }
@@ -159,15 +157,16 @@ public class SchematicPrinter {
 		syncSneaking(player, true);
 
 		BlockPos relativeCentral = new BlockPos(x,y,z);
-		BoxBuilder builder = new BoxBuilder(relativeCentral, range, playerFacing, blockSide);
-		builder.buildBox();
-		ArrayList<BlockPos> buildBox = builder.getBox();
+		
+		printArea.construct(relativeCentral, playerFacing, blockSide); //range
+		printArea.buildAreaToPrint();
+		ArrayList<BlockPos> buildArea = printArea.getBuiltArea();
 
 		final double blockReachDistance = this.minecraft.playerController.getBlockReachDistance() - 0.1;
 //		   final double blockReachDistance = 7.0F - 0.1;
 //		final double blockReachDistanceSq = blockReachDistance * blockReachDistance;
 
-		for (BlockPos pos : buildBox) {
+		for (BlockPos pos : buildArea) {
 
 			if (!this.schematic.isInside(pos) || 
 					!blockIsReachable(pos, playerX, playerY, playerZ, blockReachDistance)) {	

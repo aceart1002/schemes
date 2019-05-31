@@ -14,15 +14,12 @@ import com.github.lunatrius.schematica.client.world.SchematicWorld.LayerMode;
 import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Names;
-import com.google.common.base.Equivalence.Wrapper;
 
-import aceart.network.UpdateMessage;
 import aceart.schemes.Schemes;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.client.config.GuiUnicodeGlyphButton;
 
@@ -203,8 +200,9 @@ public class GuiSchematicControl extends GuiScreenBase {
 
 			} else if (guiButton.id == this.btnFlip.id) {
 				if (FlipHelper.INSTANCE.flip(this.schematic, ClientProxy.axisFlip, isShiftKeyDown())) {
-					UpdateMessage message = new UpdateMessage(new MBlockPos(), "", 0, new MBlockPos(), 4);
-					Schemes.wrapper.sendToServer(message);
+					
+					ClientProxy.updater.updateServer(new MBlockPos(), "", 0, new MBlockPos(), 4);
+
 					finalizeTransformation();
 				}
 			} else if (guiButton.id == this.btnRotateDirection.id) {
@@ -215,9 +213,8 @@ public class GuiSchematicControl extends GuiScreenBase {
 				if (RotationHelper.INSTANCE.rotate(this.schematic, ClientProxy.axisRotation, isShiftKeyDown())) {
 					setPoint(this.numericX, this.numericY, this.numericZ, this.schematic.position);
 					
-					UpdateMessage message = new UpdateMessage(new MBlockPos(), "", 0, new MBlockPos(), 5);
-					Schemes.wrapper.sendToServer(message);
-					
+					ClientProxy.updater.updateServer(new MBlockPos(), "", 0, new MBlockPos(), 5);
+				
 					finalizeTransformation();	
 				}
 			} 

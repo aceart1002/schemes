@@ -25,16 +25,14 @@ import com.github.lunatrius.schematica.handler.client.WorldHandler;
 import com.github.lunatrius.schematica.reference.Reference;
 import com.github.lunatrius.schematica.world.schematic.SchematicAlpha;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
-import com.github.lunatrius.schematica.world.storage.Schematic;
 
-import aceart.gui.GuiGenerateRails;
-import aceart.network.UpdateMessage;
-import aceart.schemes.Schemes;
+import aceart.api.Controlling;
+import aceart.api.MWrapper;
+import aceart.api.Saving;
+import aceart.api.ServerUpdater;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -119,6 +117,10 @@ public class ClientProxy extends CommonProxy {
 
 	}
 
+	public static void setDisplace(BlockPos pos) {
+		displace = new MBlockPos(pos.getX(), pos.getY(), pos.getZ());
+	}
+	
 	public static boolean shouldDisplace = false;
 	public static MBlockPos displace = new MBlockPos();
 	public static void offsetSchematic(final SchematicWorld schematic) {
@@ -259,7 +261,7 @@ public class ClientProxy extends CommonProxy {
 
 		final ISchematic schematic = SchematicFormat.readFromFile(directory, filename);
 		if(schematic == null) {
-			System.out.println("scheme with this name doesn't exist!");
+			System.out.println("Scheme with this name doesn't exist!");
 			return false;
 		}
 		
@@ -283,7 +285,7 @@ public class ClientProxy extends CommonProxy {
 		//ISchematic scheme = format.readFromNBT(tag);
 
 		rotationRender = controller.getRotationRender();
-		displace = controller.getDisplacement();
+		displace = MWrapper.transformBlockPos(controller.getDisplacement());
 		rotations = controller.getRotations();
 		flip = controller.getFlip();
 		schemeName = controller.getSchemeName();
@@ -320,10 +322,8 @@ public class ClientProxy extends CommonProxy {
 			
 //			ISchematic schemeToSend = world.getSchematic();
 		
-			UpdateMessage message = new UpdateMessage(new MBlockPos(), schemeName,
+			updater.updateServer(new MBlockPos(), schemeName,
 					rotationRender, displace, 2);
-			
-			Schemes.wrapper.sendToServer(message);
 			
 			rotationRender = 0;
 			displace = new MBlockPos();
@@ -359,9 +359,5 @@ public class ClientProxy extends CommonProxy {
 		MINECRAFT.displayGuiScreen(new GuiSchematicControl(MINECRAFT.currentScreen));
 	}
 	
-	@Override
-	public void openGuiGenerate() {
-		MINECRAFT.displayGuiScreen(new GuiGenerateRails(MINECRAFT.currentScreen));
-	}
 
 }

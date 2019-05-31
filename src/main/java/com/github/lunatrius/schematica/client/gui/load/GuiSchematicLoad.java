@@ -10,16 +10,12 @@ import java.util.List;
 import org.lwjgl.Sys;
 
 import com.github.lunatrius.core.client.gui.GuiScreenBase;
-import com.github.lunatrius.schematica.client.world.SchematicWorld;
 import com.github.lunatrius.schematica.handler.ConfigurationHandler;
-import com.github.lunatrius.schematica.proxy.ClientProxy;
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 import com.github.lunatrius.schematica.util.FileFilterSchematic;
 import com.github.lunatrius.schematica.world.schematic.SchematicUtil;
 
-import aceart.blocks.BlockSchemeController;
-import aceart.blocks.tiles.TileSchemeContainer;
 import aceart.schemes.Schemes;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

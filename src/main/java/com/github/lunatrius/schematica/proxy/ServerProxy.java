@@ -132,9 +132,7 @@ public class ServerProxy extends CommonProxy {
 	}
 	
 	@Override
-	public void openGuiGenerate() {
-		// TODO Auto-generated method stub
-		
+	public void unloadSchematic(boolean flag) {
 	}
 
 }
