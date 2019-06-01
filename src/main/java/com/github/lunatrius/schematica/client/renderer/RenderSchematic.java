@@ -82,7 +82,7 @@ public class RenderSchematic extends RenderGlobal {
     public static final int CHUNKS = CHUNKS_XZ * CHUNKS_XZ * CHUNKS_Y;
     public static final int PASS = 2;
 
-    private static final ShaderProgram SHADER_ALPHA = new ShaderProgram("schematica", null, "shaders/alpha.frag");
+    private static final ShaderProgram SHADER_ALPHA = new ShaderProgram("schematica", null, "assets.schemes.shaders/alpha.frag");
     private static final Vector3d PLAYER_POSITION_OFFSET = new Vector3d();
     private final Minecraft mc;
     private final Profiler profiler;

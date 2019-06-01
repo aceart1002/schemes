@@ -40,7 +40,8 @@ import net.minecraftforge.fluids.BlockFluidBase;
 
 public class SchematicPrinter {
 	public static final SchematicPrinter INSTANCE = new SchematicPrinter();
-
+	public static final Printable PRINT_AREA = ClientProxy.printAreaConstructor;
+	
     private final Minecraft minecraft = Minecraft.getMinecraft();
     
     private boolean isEnabled = true;
@@ -50,7 +51,7 @@ public class SchematicPrinter {
     private byte[][][] timeout = null;
     private HashMap<BlockPos, Integer> syncBlacklist = new HashMap<BlockPos, Integer>();
 
-    public static Printable printArea;
+    
     
     public boolean isEnabled() {
         return this.isEnabled;
@@ -158,9 +159,9 @@ public class SchematicPrinter {
 
 		BlockPos relativeCentral = new BlockPos(x,y,z);
 		
-		printArea.construct(relativeCentral, playerFacing, blockSide); //range
-		printArea.buildAreaToPrint();
-		ArrayList<BlockPos> buildArea = printArea.getBuiltArea();
+		PRINT_AREA.construct(relativeCentral, playerFacing, blockSide); //range
+		PRINT_AREA.buildAreaToPrint();
+		ArrayList<BlockPos> buildArea = PRINT_AREA.getBuiltArea();
 
 		final double blockReachDistance = this.minecraft.playerController.getBlockReachDistance() - 0.1;
 //		   final double blockReachDistance = 7.0F - 0.1;

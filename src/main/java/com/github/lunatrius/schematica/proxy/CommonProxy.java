@@ -26,6 +26,7 @@ import com.github.lunatrius.schematica.world.storage.GeneratedScheme;
 import com.github.lunatrius.schematica.world.storage.Schematic;
 
 import aceart.api.Controlling;
+import aceart.api.Printable;
 import aceart.api.Saving;
 import aceart.api.ServerUpdater;
 import net.minecraft.block.Block;
@@ -51,6 +52,7 @@ public abstract class CommonProxy {
 	public static Controlling controller;
 	public static Saving saver;
 	public static ServerUpdater updater;
+	public static Printable printAreaConstructor;
 	
 	public void preInit(final FMLPreInitializationEvent event) {
 		Reference.logger = event.getModLog();
