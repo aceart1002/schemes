@@ -11,6 +11,7 @@ import com.github.lunatrius.schematica.handler.ConfigurationHandler;
 import com.github.lunatrius.schematica.handler.PlayerHandler;
 import com.github.lunatrius.schematica.reference.Reference;
 
+import aceart.api.InitObject;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,6 +26,11 @@ public class ServerProxy extends CommonProxy {
         super.init(event);
 
         MinecraftForge.EVENT_BUS.register(PlayerHandler.INSTANCE);
+        
+    	controller = InitObject.controller;
+		saver = InitObject.saver;
+		updater = InitObject.updater;
+		printAreaConstructor = InitObject.printer;
     }
 
     @Override

@@ -1,5 +1,13 @@
 package com.github.lunatrius.schematica.handler;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayDeque;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Queue;
+import java.util.Set;
+
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.reference.Reference;
 
@@ -11,14 +19,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayDeque;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Queue;
-import java.util.Set;
 
 public class ConfigurationHandler {
     public static final ConfigurationHandler INSTANCE = new ConfigurationHandler();
@@ -103,8 +103,6 @@ public class ConfigurationHandler {
     public static Property propLoadEnabled = null;
     public static Property propPlayerQuotaKilobytes = null;
 
-    public static Property morePropsForYou = null;
-    
     private static final Set<Block> extraAirBlockList = new HashSet<Block>();
 
     public static void init(final File configFile) {
@@ -164,8 +162,6 @@ public class ConfigurationHandler {
         propRenderDistance = configuration.get(Names.Config.Category.RENDER, Names.Config.RENDER_DISTANCE, RENDER_DISTANCE_DEFAULT, Names.Config.RENDER_DISTANCE_DESC, 2, 16);
         propRenderDistance.setLanguageKey(Names.Config.LANG_PREFIX + "." + Names.Config.RENDER_DISTANCE);
         renderDistance = propRenderDistance.getInt(RENDER_DISTANCE_DEFAULT);
-        
-        morePropsForYou = configuration.get(Names.Config.Category.RENDER, "parameter.more", RENDER_DISTANCE_DEFAULT, Names.Config.SORT_TYPE_DESC, 2, 16);
     }
 
     private static void loadConfigurationPrinter() {

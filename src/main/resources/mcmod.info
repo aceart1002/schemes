@@ -2,13 +2,13 @@
 	"modListVersion": 2,
 	"modList": [
 		{
-			"modid": "schemes",
-			"name": "Schemes",
+			"modid": "schematica",
+			"name": "Schematica",
 			"description": "Import and export Minecraft schematic files in Minecraft!",
 			"mcversion": "${mcversion}",
 			"version": "${version}",
 			"authorList": [
-				"aceart"
+				"Lunatrius"
 			],
 			"credits": "AbrarSyed, AtomicBlom, UltraMoogleMan",
 			"dependants": [  ],

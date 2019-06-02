@@ -13,7 +13,7 @@ import com.github.lunatrius.schematica.reference.Constants;
 import com.github.lunatrius.schematica.reference.Names;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
 
-import aceart.api.MWrapper;
+import aceart.schemes.MWrapper;
 import aceart.schemes.Schemes;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

@@ -26,6 +26,7 @@ import com.github.lunatrius.schematica.world.storage.GeneratedScheme;
 import com.github.lunatrius.schematica.world.storage.Schematic;
 
 import aceart.api.Controlling;
+import aceart.api.InitObject;
 import aceart.api.Printable;
 import aceart.api.Saving;
 import aceart.api.ServerUpdater;
@@ -48,9 +49,10 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public abstract class CommonProxy {
 	public boolean isSaveEnabled = true;
 	public boolean isLoadEnabled = true;
-
+	
 	public static Controlling controller;
 	public static Saving saver;
+	
 	public static ServerUpdater updater;
 	public static Printable printAreaConstructor;
 	
@@ -70,6 +72,11 @@ public abstract class CommonProxy {
 	}
 
 	public void postInit(final FMLPostInitializationEvent event) {
+		controller = InitObject.controller;
+		saver = InitObject.saver;
+		
+		updater = InitObject.updater;
+		printAreaConstructor = InitObject.printer;
 	}
 
 	public void serverStarting(final FMLServerStartingEvent event) {
@@ -110,6 +117,9 @@ public abstract class CommonProxy {
 	public void resetSettings() {
 		this.isSaveEnabled = true;
 		this.isLoadEnabled = true;
+		
+	
+
 	}
 
 	public void copyChunkToSchematic(final ISchematic schematic, final World world, final int chunkX, final int chunkZ, final int minX, final int maxX, final int minY, final int maxY, final int minZ, final int maxZ) {

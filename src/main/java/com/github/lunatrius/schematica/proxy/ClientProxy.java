@@ -27,9 +27,11 @@ import com.github.lunatrius.schematica.world.schematic.SchematicAlpha;
 import com.github.lunatrius.schematica.world.schematic.SchematicFormat;
 
 import aceart.api.Controlling;
-import aceart.api.MWrapper;
+import aceart.api.InitObject;
+import aceart.api.Printable;
 import aceart.api.Saving;
 import aceart.api.ServerUpdater;
+import aceart.schemes.MWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.entity.player.EntityPlayer;
@@ -246,6 +248,11 @@ public class ClientProxy extends CommonProxy {
 		pointA.set(0, 0, 0);
 		pointB.set(0, 0, 0);
 		updatePoints();
+		
+		controller = InitObject.controller;
+		saver = InitObject.saver;
+		
+	
 	}
 
 	@Override
