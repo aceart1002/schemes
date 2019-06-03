@@ -40,12 +40,12 @@ import net.minecraftforge.fluids.BlockFluidBase;
 
 public class SchematicPrinter {
 	public static final SchematicPrinter INSTANCE = new SchematicPrinter();
-	public static final Printable PRINT_AREA = ClientProxy.printAreaConstructor;
+	private Printable PRINT_AREA = ClientProxy.printAreaConstructor;
 	
     private final Minecraft minecraft = Minecraft.getMinecraft();
     
     private boolean isEnabled = true;
-    private boolean isPrinting = false;
+    public boolean isPrinting = false;
 
     private SchematicWorld schematic = null;
     private byte[][][] timeout = null;
